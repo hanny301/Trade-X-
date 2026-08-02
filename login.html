@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeX – Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0b0e14;
+            color: #e8edf5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .auth-container {
+            background: #141a24;
+            border: 1px solid rgba(45, 55, 72, 0.8);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+        }
+        .auth-container .logo {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .auth-container .sub {
+            color: #9ca3af;
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .auth-container label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #d1d5db;
+            margin-bottom: 4px;
+            margin-top: 16px;
+        }
+        .auth-container input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            background: #0b0e14;
+            color: #e5e7eb;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+        .auth-container input:focus {
+            outline: none;
+            border-color: #fbbf24;
+            box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.1);
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            margin-top: 20px;
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(251, 191, 36, 0.4);
+        }
+        .switch-link {
+            text-align: center;
+            margin-top: 16px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        .switch-link a {
+            color: #fbbf24;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .switch-link a:hover {
+            text-decoration: underline;
+        }
+        .error-msg {
+            color: #f87171;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .success-msg {
+            color: #34d399;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: #6b7280;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #9ca3af;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo">⚡ TradeX</div>
+        <p class="sub" id="authSub">Login to access your dashboard</p>
+        <form id="authForm">
+            <div id="nameField" class="hidden">
+                <label>Full Name</label>
+                <input type="text" id="authName" placeholder="John Doe" />
+            </div>
+            <label>Email</label>
+            <input type="email" id="authEmail" placeholder="you@example.com" required />
+            <label>Password</label>
+            <input type="password" id="authPassword" placeholder="••••••••" required minlength="4" />
+            <button type="submit" class="btn-primary" id="authBtn">Login</button>
+            <div class="switch-link">
+                <span id="switchText">Don't have an account? <a id="switchLink">Sign up</a></span>
+            </div>
+            <div id="authError" class="error-msg"></div>
+        </form>
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+
+    <script src="db.js"></script>
+    <script>
+        let isLogin = true;
+
+        // Check for logout param
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('logout') === 'true') {
+            DB.clearSession();
+        }
+
+        // Check if already logged in
+        const user = getCurrentUser();
+        if (user) {
+            if (user.role === 'admin') {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                window.location.href = 'user-dashboard.html';
+            }
+        }
+
+        function toggleMode() {
+            isLogin = !isLogin;
+            const btn = document.getElementById('authBtn');
+            const sub = document.getElementById('authSub');
+            const nameField = document.getElementById('nameField');
+            const switchText = document.getElementById('switchText');
+            const link = document.getElementById('switchLink');
+
+            if (isLogin) {
+                btn.textContent = 'Login';
+                sub.textContent = 'Login to access your dashboard';
+                nameField.classList.add('hidden');
+                switchText.innerHTML = `Don't have an account? <a id="switchLink">Sign up</a>`;
+                document.getElementById('switchLink').onclick = toggleMode;
+            } else {
+                btn.textContent = 'Create Account';
+                sub.textContent = 'Join TradeX and start automated trading';
+                nameField.classList.remove('hidden');
+                switchText.innerHTML = `Already have an account? <a id="switchLink">Login</a>`;
+                document.getElementById('switchLink').onclick = toggleMode;
+            }
+            document.getElementById('authError').textContent = '';
+        }
+
+        document.getElementById('switchLink').onclick = toggleMode;
+
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value.trim();
+            const password = document.getElementById('authPassword').value.trim();
+            const name = document.getElementById('authName').value.trim();
+            const errEl = document.getElementById('authError');
+
+            if (!email || !password || (!isLogin && !name)) {
+                errEl.textContent = 'Please fill in all fields.';
+                return;
+            }
+
+            const users = DB.getUsers();
+
+            if (isLogin) {
+                const user = users.find(u => u.email === email && u.password === password);
+                if (!user) {
+                    errEl.textContent = 'Invalid email or password.';
+                    return;
+                }
+                errEl.textContent = '';
+                DB.setSession({ userId: user.id, email: user.email, role: user.role });
+                if (user.role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'user-dashboard.html';
+                }
+            } else {
+                if (users.find(u => u.email === email)) {
+                    errEl.textContent = 'An account with this email already exists.';
+                    return;
+                }
+                const isFirst = users.length === 0;
+                const newUser = {
+                    id: uid(),
+                    name,
+                    email,
+                    password,
+                    role: isFirst ? 'admin' : 'user',
+                    joinDate: new Date().toISOString(),
+                    purchases: []
+                };
+                users.push(newUser);
+                DB.setUsers(users);
+                errEl.textContent = '';
+                DB.setSession({ userId: newUser.id, email: newUser.email, role: newUser.role });
+                if (newUser.role === 'admin') {
+                    window.location.href = 'admin-dashboard.html';
+                } else {
+                    window.location.href = 'user-dashboard.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

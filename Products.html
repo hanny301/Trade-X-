@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeX – Manage Products</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0b0e14;
+            color: #e8edf5;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(251, 191, 36, 0.4);
+        }
+        .btn-primary.small {
+            padding: 8px 18px;
+            font-size: 13px;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+        .btn-outline:hover {
+            border-color: #fbbf24;
+            color: #fbbf24;
+        }
+        .btn-success {
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(31, 41, 55, 0.6);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: #6b7280;
+            font-weight: 400;
+            background: none;
+            -webkit-text-fill-color: #6b7280;
+        }
+        .logo-icon {
+            font-size: 28px;
+            -webkit-text-fill-color: initial;
+            color: #fbbf24;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #9ca3af;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1f2937;
+            padding: 6px 16px 6px 12px;
+            border-radius: 30px;
+            border: 1px solid #374151;
+        }
+        .user-badge .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .user-badge .uname {
+            font-size: 14px;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+        .user-badge .role-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            background: #fbbf24;
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: #0b0e14;
+            letter-spacing: 0.5px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .page-header .sub {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        .table-wrap {
+            background: #141a24;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 16px;
+        }
+        .table-wrap table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .table-wrap th {
+            text-align: left;
+            padding: 14px 20px;
+            background: #0f151f;
+            color: #9ca3af;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #1f2937;
+        }
+        .table-wrap td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #1f2937;
+            color: #e5e7eb;
+        }
+        .table-wrap tr:last-child td {
+            border-bottom: none;
+        }
+        .table-wrap tr:hover td {
+            background: #1a212d;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge.blue {
+            background: #1e3a5f;
+            color: #60a5fa;
+        }
+        .badge.green {
+            background: #065f46;
+            color: #34d399;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #d1d5db;
+            margin-bottom: 4px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #2d3748;
+            background: #0b0e14;
+            color: #e5e7eb;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+        }
+        .modal {
+            background: #141a24;
+            border: 1px solid #2d3748;
+            border-radius: 24px;
+            padding: 36px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        .modal .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .modal .close-btn:hover {
+            color: #fff;
+        }
+        .modal h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.95) translateY(20px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .empty-state h3 {
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+        .text-muted {
+            color: #9ca3af;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            padding: 16px 24px;
+            border-radius: 16px;
+            color: #e5e7eb;
+            font-size: 14px;
+            max-width: 380px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            animation: slideUp 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toast .toast-icon {
+            font-size: 24px;
+        }
+        .toast.success .toast-icon {
+            color: #34d399;
+        }
+        .toast.error .toast-icon {
+            color: #f87171;
+        }
+        .toast.info .toast-icon {
+            color: #60a5fa;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        footer {
+            border-top: 1px solid #1f2937;
+            padding: 30px 0;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 30px;
+        }
+        footer a {
+            color: #9ca3af;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+        footer a:hover {
+            color: #fbbf24;
+        }
+
+        @media (max-width: 700px) {
+            .table-wrap { overflow-x: auto; }
+            .page-header h1 { font-size: 24px; }
+            .modal { padding: 24px; }
+            header { flex-direction: column; align-items: stretch; gap: 12px; }
+            .nav-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">⚡</span> Trade<span>X</span>
+            </div>
+            <div class="nav-links" id="mainNav">
+                <a href="index.html">Home</a>
+                <a href="admin-dashboard.html">Admin</a>
+                <!-- FIXED: Changed to match file name (or keep as Products.html if you renamed) -->
+                <a href="products.html" style="color:#fbbf24;">Products</a>
+                <div class="user-badge" id="userBadge">
+                    <div class="avatar" id="userAvatar">A</div>
+                    <span class="uname" id="userName">Admin</span>
+                    <span class="role-tag">Admin</span>
+                    <a href="login.html?logout=true" style="color:#f87171;font-size:13px;font-weight:500;">Logout</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-header">
+            <div>
+                <h1>📦 Product Management</h1>
+                <p class="sub">Manage all your Expert Advisor products</p>
+            </div>
+            <button class="btn-primary" onclick="openAddModal()">+ Add New Product</button>
+        </div>
+
+        <div id="productTableContainer">
+            <!-- rendered by JS -->
+        </div>
+
+        <footer>
+            <p><a href="#">Privacy</a> • <a href="#">Refund Policy</a> • <a href="#">Support</a></p>
+            <p style="margin-top:12px;">© 2026 TradeX Robots. Not affiliated with MetaQuotes.</p>
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div id="productModal" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" onclick="closeModal()">✕</button>
+            <h2 id="modalTitle">Add Product</h2>
+            <form id="productForm">
+                <input type="hidden" id="editId" value="" />
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="prodName" placeholder="e.g., Pro EA" required />
+                </div>
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" id="prodPrice" placeholder="197" required min="0" step="0.01" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="prodDesc" placeholder="Full package with lifetime updates" required />
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input type="text" id="prodType" placeholder="e.g., standard, pro, vip, custom" />
+                </div>
+                <div class="form-group">
+                    <label>Features (comma-separated)</label>
+                    <input type="text" id="prodFeatures" placeholder="MT5 EA, Lifetime updates, Priority support" />
+                </div>
+                <div class="form-group">
+                    <label>Download Link</label>
+                    <input type="text" id="prodLink" placeholder="#ea-pro" />
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%;">Save Product</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="db.js"></script>
+    <script>
+        // ============================================================
+        //  AUTH GUARD (with safety check)
+        // ============================================================
+        let currentUser = null;
+
+        if (typeof requireAdmin === 'function') {
+            if (!requireAdmin()) {
+                // Redirect happens inside requireAdmin
+            }
+            currentUser = getCurrentUser();
+        } else {
+            // db.js didn't load – redirect to login
+            window.location.href = 'login.html';
+        }
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+        function toast(msg, type = 'info') {
+            const old = document.querySelector('.toast');
+            if (old) old.remove();
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            el.innerHTML = `<span class="toast-icon">${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        function updateNav() {
+            if (currentUser) {
+                document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+                document.getElementById('userName').textContent = currentUser.name;
+            }
+        }
+
+        // ============================================================
+        //  RENDER PRODUCTS TABLE
+        // ============================================================
+        function renderProducts() {
+            const container = document.getElementById('productTableContainer');
+            const products = DB.getProducts();
+
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📦</div>
+                        <h3>No products yet</h3>
+                        <p class="text-muted">Click "Add New Product" to create your first EA package.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Type</th>
+                                <th>Features</th>
+                                <th>Download Link</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${products.map(p => `
+                                <tr>
+                                    <td><strong>${p.name}</strong></td>
+                                    <td>$${p.price}</td>
+                                    <td><span class="badge blue">${p.type || 'custom'}</span></td>
+                                    <td style="max-width:180px;word-break:break-word;">${p.features ? p.features.join(', ') : '-'}</td>
+                                    <td style="max-width:120px;word-break:break-all;">${p.downloadLink || '-'}</td>
+                                    <td>
+                                        <button class="btn-outline" style="padding:4px 12px;font-size:12px;" onclick="openEditModal(${p.id})">✎ Edit</button>
+                                        <button class="btn-danger" style="padding:4px 12px;font-size:12px;margin-left:6px;" onclick="deleteProduct(${p.id})">✕ Delete</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // ============================================================
+        //  MODAL CONTROLS
+        // ============================================================
+        function openAddModal() {
+            document.getElementById('modalTitle').textContent = '➕ Add New Product';
+            document.getElementById('editId').value = '';
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('prodType').value = '';
+            document.getElementById('prodFeatures').value = '';
+            document.getElementById('prodLink').value = '';
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function openEditModal(id) {
+            const products = DB.getProducts();
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('modalTitle').textContent = '✎ Edit Product';
+            document.getElementById('editId').value = id;
+            document.getElementById('prodName').value = p.name;
+            document.getElementById('prodPrice').value = p.price;
+            document.getElementById('prodDesc').value = p.description;
+            document.getElementById('prodType').value = p.type || '';
+            document.getElementById('prodFeatures').value = p.features ? p.features.join(', ') : '';
+            document.getElementById('prodLink').value = p.downloadLink || '';
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        // ============================================================
+        //  SAVE PRODUCT
+        // ============================================================
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('editId').value;
+            const name = document.getElementById('prodName').value.trim();
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            const description = document.getElementById('prodDesc').value.trim();
+            const type = document.getElementById('prodType').value.trim() || 'custom';
+            const featuresInput = document.getElementById('prodFeatures').value.trim();
+            const features = featuresInput ? featuresInput.split(',').map(f => f.trim()) : [];
+            const downloadLink = document.getElementById('prodLink').value.trim() || '#';
+
+            if (!name || isNaN(price) || !description) {
+                toast('Please fill in name, price, and description.', 'error');
+                return;
+            }
+
+            const products = DB.getProducts();
+
+            if (id) {
+                // Edit existing
+                const p = products.find(x => x.id === parseInt(id));
+                if (p) {
+                    p.name = name;
+                    p.price = price;
+                    p.description = description;
+                    p.type = type;
+                    p.features = features;
+                    p.downloadLink = downloadLink;
+                    DB.setProducts(products);
+                    toast('Product updated successfully!', 'success');
+                }
+            } else {
+                // Add new
+                const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                products.push({ id: newId, name, description, price, type, features, downloadLink });
+                DB.setProducts(products);
+                toast('Product added successfully!', 'success');
+            }
+
+            closeModal();
+            renderProducts();
+        });
+
+        // ============================================================
+        //  DELETE PRODUCT
+        // ============================================================
+        function deleteProduct(id) {
+            if (!confirm('Delete this product?')) return;
+            let products = DB.getProducts();
+            products = products.filter(p => p.id !== id);
+            DB.setProducts(products);
+            toast('Product deleted.', 'success');
+            renderProducts();
+        }
+
+        // ============================================================
+        //  CLOSE MODAL ON OVERLAY CLICK
+        // ============================================================
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        if (currentUser) {
+            updateNav();
+            renderProducts();
+        }
+    </script>
+</body>
+</html>

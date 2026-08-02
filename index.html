@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradeX – Home</title>
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0b0e14;
+            color: #e8edf5;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(251, 191, 36, 0.4);
+        }
+        .btn-primary.small {
+            padding: 10px 24px;
+            font-size: 14px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .btn-outline:hover {
+            border-color: #fbbf24;
+            color: #fbbf24;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+        .btn-success {
+            background: #16a34a;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .btn-success:hover {
+            background: #15803d;
+        }
+        .btn-ghost {
+            background: transparent;
+            color: #fbbf24;
+            border: 1px solid #fbbf24;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .btn-ghost:hover {
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(31, 41, 55, 0.6);
+            flex-wrap: wrap;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(4px);
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: #6b7280;
+            font-weight: 400;
+            background: none;
+            -webkit-text-fill-color: #6b7280;
+        }
+        .logo-icon {
+            font-size: 28px;
+            -webkit-text-fill-color: initial;
+            color: #fbbf24;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #9ca3af;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #1f2937;
+            padding: 6px 16px 6px 12px;
+            border-radius: 30px;
+            border: 1px solid #374151;
+        }
+        .user-badge .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .user-badge .uname {
+            font-size: 14px;
+            color: #e5e7eb;
+            font-weight: 500;
+        }
+        .user-badge .role-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            background: #374151;
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: #9ca3af;
+            letter-spacing: 0.5px;
+        }
+        .user-badge .role-tag.admin {
+            background: #fbbf24;
+            color: #0b0e14;
+        }
+
+        /* ---------- HERO ---------- */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            padding: 60px 0;
+        }
+        .hero-grid .badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.1);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .hero-grid h1 {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+        .hero-grid h1 .highlight {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-grid p {
+            font-size: 18px;
+            color: #9ca3af;
+            margin: 24px 0 32px;
+            max-width: 480px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        .hero-stats div span {
+            display: block;
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .hero-stats div small {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .hero-image {
+            background: radial-gradient(circle at 30% 30%, #1a212d, #0f151f);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #2d3748;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-image .mock-chart {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b, #d97706);
+            border-radius: 12px;
+            opacity: 0.4;
+            margin-bottom: 20px;
+        }
+        .hero-image code {
+            background: #0b0e14;
+            padding: 8px 20px;
+            border-radius: 30px;
+            color: #fbbf24;
+            font-size: 14px;
+            border: 1px solid #374151;
+            font-weight: 500;
+        }
+        .hero-image .glow-orb {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.1), transparent 70%);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+            pointer-events: none;
+        }
+
+        /* ---------- SECTIONS ---------- */
+        .section {
+            padding: 60px 0;
+            border-top: 1px solid #1f2937;
+        }
+        .section:first-of-type {
+            border-top: none;
+        }
+        .section h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        .section .sub {
+            color: #9ca3af;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .feature-card {
+            background: #141a24;
+            padding: 32px 24px;
+            border-radius: 20px;
+            border: 1px solid #1f2937;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            border-color: #fbbf24;
+            transform: translateY(-4px);
+        }
+        .feature-card .icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.05);
+            padding: 12px;
+            border-radius: 16px;
+            line-height: 1;
+        }
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .feature-card p {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        /* ---------- PRICING ---------- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .pricing-card {
+            background: #141a24;
+            padding: 40px 30px;
+            border-radius: 24px;
+            border: 1px solid #1f2937;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .pricing-card:hover {
+            transform: translateY(-6px);
+            border-color: #fbbf24;
+        }
+        .pricing-card.popular {
+            border-color: #fbbf24;
+            background: #1a212d;
+        }
+        .pricing-card.popular::before {
+            content: "⭐ BEST SELLER";
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            padding: 4px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        .pricing-card .price {
+            font-size: 48px;
+            font-weight: 800;
+            margin: 20px 0 8px;
+        }
+        .pricing-card .price small {
+            font-size: 18px;
+            font-weight: 400;
+            color: #6b7280;
+        }
+        .pricing-card ul {
+            list-style: none;
+            margin: 24px 0 32px;
+            text-align: left;
+            flex-grow: 1;
+        }
+        .pricing-card ul li {
+            padding: 8px 0;
+            color: #d1d5db;
+            border-bottom: 1px solid #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pricing-card ul li::before {
+            content: "✓";
+            color: #fbbf24;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .pricing-card .btn-primary {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-top: auto;
+        }
+
+        /* ---------- HOW IT WORKS ---------- */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .step-card {
+            background: #141a24;
+            padding: 30px 24px;
+            border-radius: 20px;
+            border: 1px solid #1f2937;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .step-card:hover {
+            border-color: #fbbf24;
+            transform: translateY(-4px);
+        }
+        .step-card .step-num {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            line-height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            font-weight: 800;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+        .step-card h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+        .step-card p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* ---------- REVIEWS ---------- */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-top: 30px;
+        }
+        .review-card {
+            background: #141a24;
+            padding: 24px;
+            border-radius: 20px;
+            border: 1px solid #1f2937;
+            transition: all 0.3s ease;
+        }
+        .review-card:hover {
+            border-color: #fbbf24;
+        }
+        .review-card .stars {
+            color: #fbbf24;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+        .review-card .rtext {
+            color: #d1d5db;
+            margin: 12px 0;
+            font-size: 15px;
+            font-style: italic;
+        }
+        .review-card .rauthor {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        .review-card .rauthor .ravatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .review-card .rauthor .rname {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .review-card .rauthor .rdate {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        /* ---------- FAQ ---------- */
+        .faq-list {
+            max-width: 800px;
+            margin: 30px auto 0;
+        }
+        .faq-item {
+            background: #141a24;
+            border: 1px solid #1f2937;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .faq-item:hover {
+            border-color: #374151;
+        }
+        .faq-item .faq-q {
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            color: #e5e7eb;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .faq-item .faq-q:hover {
+            color: #fbbf24;
+        }
+        .faq-item .faq-q .faq-icon {
+            font-size: 20px;
+            color: #6b7280;
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-q .faq-icon {
+            transform: rotate(180deg);
+            color: #fbbf24;
+        }
+        .faq-item .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            padding: 0 24px;
+            color: #9ca3af;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        .faq-item.active .faq-a {
+            max-height: 300px;
+            padding: 0 24px 20px;
+        }
+
+        /* ---------- BLOG ---------- */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .blog-card {
+            background: #141a24;
+            border-radius: 20px;
+            border: 1px solid #1f2937;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .blog-card:hover {
+            transform: translateY(-4px);
+            border-color: #fbbf24;
+        }
+        .blog-card .bimg {
+            height: 160px;
+            background: linear-gradient(135deg, #1f2937, #111827);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        .blog-card .bcontent {
+            padding: 20px 24px 24px;
+        }
+        .blog-card .bcontent .btag {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.1);
+            color: #fbbf24;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .blog-card .bcontent h3 {
+            font-size: 18px;
+            margin: 10px 0 6px;
+        }
+        .blog-card .bcontent p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        .blog-card .bcontent .bdate {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        /* ---------- CONTACT ---------- */
+        .contact-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            background: #0b0e14;
+            color: #e5e7eb;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            margin-bottom: 14px;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+        .contact-form label {
+            font-weight: 500;
+            color: #d1d5db;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .contact-info {
+            background: #141a24;
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #1f2937;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+        .contact-info h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+        .contact-info p {
+            color: #9ca3af;
+        }
+        .form-message {
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        /* ---------- BACKTEST ---------- */
+        .backtest-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 140px;
+            padding: 20px 0;
+            margin-top: 10px;
+        }
+        .backtest-chart .bar {
+            flex: 1;
+            background: linear-gradient(180deg, #fbbf24, #d97706);
+            border-radius: 6px 6px 0 0;
+            min-height: 8px;
+            transition: height 0.8s ease;
+            position: relative;
+        }
+        .backtest-chart .bar .val {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        /* ---------- MODAL (Product Details) ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-box {
+            background: #141a24;
+            border: 1px solid #2d3748;
+            border-radius: 24px;
+            max-width: 600px;
+            width: 100%;
+            padding: 40px 36px;
+            position: relative;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                transform: scale(0.95) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        .modal-box .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: color 0.2s ease;
+            background: none;
+            border: none;
+        }
+        .modal-box .close-modal:hover {
+            color: #f87171;
+        }
+        .modal-box h2 {
+            font-size: 28px;
+            margin-bottom: 4px;
+        }
+        .modal-box .modal-price {
+            font-size: 36px;
+            font-weight: 800;
+            color: #fbbf24;
+            margin: 12px 0;
+        }
+        .modal-box .modal-desc {
+            color: #9ca3af;
+            margin-bottom: 16px;
+        }
+        .modal-box .modal-features {
+            list-style: none;
+            margin: 16px 0 24px;
+        }
+        .modal-box .modal-features li {
+            padding: 6px 0;
+            color: #d1d5db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-box .modal-features li::before {
+            content: "✓";
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        /* ---------- REGISTER MODAL ---------- */
+        .register-modal .modal-box {
+            max-width: 440px;
+        }
+        .register-modal .modal-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            background: #0b0e14;
+            color: #e5e7eb;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            margin-bottom: 14px;
+        }
+        .register-modal .modal-box input:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+        .register-modal .modal-box label {
+            font-weight: 500;
+            color: #d1d5db;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            padding: 16px 24px;
+            border-radius: 16px;
+            color: #e5e7eb;
+            font-size: 14px;
+            max-width: 380px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            animation: slideUp 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toast .toast-icon {
+            font-size: 24px;
+        }
+        .toast.success .toast-icon {
+            color: #34d399;
+        }
+        .toast.error .toast-icon {
+            color: #f87171;
+        }
+        .toast.info .toast-icon {
+            color: #60a5fa;
+        }
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        .empty-state h3 {
+            color: #e5e7eb;
+            margin-bottom: 4px;
+        }
+        .text-muted {
+            color: #9ca3af;
+        }
+        .fs-14 {
+            font-size: 14px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            border-top: 1px solid #1f2937;
+            padding: 40px 0 30px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        footer a {
+            color: #9ca3af;
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.2s ease;
+        }
+        footer a:hover {
+            color: #fbbf24;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #1f2937;
+            border: 1px solid #374151;
+            color: #d1d5db;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin: 0;
+        }
+        .social-links a:hover {
+            background: #fbbf24;
+            border-color: #fbbf24;
+            color: #0b0e14;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.3);
+        }
+        .social-links a .label {
+            display: none;
+        }
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+            margin: 0 auto 20px;
+            border-radius: 4px;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px 4px;
+            margin-bottom: 16px;
+        }
+        .footer-links a {
+            margin: 0 8px;
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 40px 0;
+            }
+            .hero-grid h1 {
+                font-size: 36px;
+            }
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .nav-links {
+                justify-content: center;
+            }
+            .contact-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 500px) {
+            .hero-stats {
+                gap: 20px;
+            }
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-links {
+                gap: 12px;
+            }
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="app">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">⚡</span> Trade<span>X</span>
+            </div>
+            <div class="nav-links" id="mainNav">
+                <!-- Rendered by JS -->
+            </div>
+        </header>
+
+        <!-- HERO -->
+        <section class="hero-grid" id="home">
+            <div>
+                <span class="badge">🔥 MT5 Expert Advisor</span>
+                <h1>
+                    Automated Trading <br />
+                    <span class="highlight">That Actually Works</span>
+                </h1>
+                <p>
+                    Fully optimized for Forex & Gold. 2-year backtest with 68% win-rate.
+                    Low drawdown. Deploy on any MT5 broker in 1 minute.
+                </p>
+                <a href="#pricing" class="btn-primary">Get the Robot →</a>
+                <div class="hero-stats">
+                    <div><span>4.8⭐</span> <small>User rating</small></div>
+                    <div><span>68%</span> <small>Win rate</small></div>
+                    <div><span>24/7</span> <small>Auto-trading</small></div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="glow-orb"></div>
+                <div class="mock-chart"></div>
+                <code>📁 ForexGOLD_EA_v2.0.ex5</code>
+                <p style="margin-top:16px; color:#6b7280; font-size:14px;">Compatible with MT5 build 4000+</p>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="section" id="features">
+            <h2>Why Traders Love This EA</h2>
+            <p class="sub">Built by quants. Tested on real ticks. No martingale. No grid.</p>
+            <div class="feature-grid">
+                <div class="feature-card"><div class="icon">📊</div><h3>Live Backtest Data</h3><p>2 years of tick-by-tick backtest on XAUUSD & EURUSD.</p></div>
+                <div class="feature-card"><div class="icon">🛡️</div><h3>Risk Management</h3><p>Auto stop-loss, trailing stop, and daily drawdown limit built-in.</p></div>
+                <div class="feature-card"><div class="icon">⚡</div><h3>Low Latency Execution</h3><p>Optimized MQL5 code – executes orders in under 200ms.</p></div>
+                <div class="feature-card"><div class="icon">📦</div><h3>Lifetime License</h3><p>One payment. Lifetime updates. No monthly fees.</p></div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="section" id="howitworks">
+            <h2>How It Works</h2>
+            <p class="sub">Get started in 3 simple steps and let the algorithm do the work.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h3>Download & Install</h3>
+                    <p>Purchase the EA, download the .ex5 file, and install it on your MT5 terminal.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h3>Attach to Chart</h3>
+                    <p>Drag the EA onto XAUUSD or EURUSD chart. Adjust risk settings to your preference.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h3>Let It Trade</h3>
+                    <p>Activate auto-trading and watch the bot analyze, execute, and manage trades for you.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOTS / PRODUCTS (Pricing) -->
+        <section class="section" id="pricing">
+            <h2>Choose Your Package</h2>
+            <p class="sub">Secure instant download after payment. Click any card for details.</p>
+            <div class="pricing-grid" id="pricingProducts"></div>
+        </section>
+
+        <!-- PRODUCT DETAILS (Modal) -->
+        <div class="modal-overlay" id="productModal">
+            <div class="modal-box">
+                <button class="close-modal" onclick="closeProductModal()">✕</button>
+                <h2 id="modalTitle">Product Name</h2>
+                <div class="modal-price" id="modalPrice">$0</div>
+                <p class="modal-desc" id="modalDesc">Description goes here.</p>
+                <ul class="modal-features" id="modalFeatures"></ul>
+                <button class="btn-primary" style="width:100%;" id="modalBuyBtn" onclick="purchaseModalProduct()">Buy Now</button>
+            </div>
+        </div>
+
+        <!-- REVIEWS -->
+        <section class="section" id="reviews">
+            <h2>What Our Users Say</h2>
+            <p class="sub">Real reviews from real traders who use TradeX every day.</p>
+            <div class="reviews-grid" id="reviewsContainer"></div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="section" id="faq">
+            <h2>Frequently Asked Questions</h2>
+            <p class="sub">Everything you need to know before getting started.</p>
+            <div class="faq-list" id="faqContainer"></div>
+        </section>
+
+        <!-- BLOG / EDUCATION -->
+        <section class="section" id="blog">
+            <h2>Learning Center</h2>
+            <p class="sub">Articles, guides, and insights to sharpen your trading edge.</p>
+            <div class="blog-grid" id="blogContainer"></div>
+        </section>
+
+        <!-- BACKTEST -->
+        <section class="section" id="backtest">
+            <h2>Real Backtest Performance</h2>
+            <p class="sub">Verified tick-by-tick results across major Forex and gold markets.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:30px;">
+                <div style="background:#141a24;padding:24px;border-radius:16px;border:1px solid #1f2937;text-align:center;"><h3 style="font-size:14px;color:#9ca3af;font-weight:400;">Average Win Rate</h3><p style="font-size:28px;font-weight:700;color:#34d399;">68%</p></div>
+                <div style="background:#141a24;padding:24px;border-radius:16px;border:1px solid #1f2937;text-align:center;"><h3 style="font-size:14px;color:#9ca3af;font-weight:400;">Max Drawdown</h3><p style="font-size:28px;font-weight:700;color:#fbbf24;">12%</p></div>
+                <div style="background:#141a24;padding:24px;border-radius:16px;border:1px solid #1f2937;text-align:center;"><h3 style="font-size:14px;color:#9ca3af;font-weight:400;">Annual Return</h3><p style="font-size:28px;font-weight:700;color:#34d399;">38%</p></div>
+            </div>
+            <div class="backtest-chart" style="max-width:600px;margin:20px auto 0;">
+                <div class="bar" style="height:38%;"><span class="val">38%</span></div>
+                <div class="bar" style="height:52%;"><span class="val">52%</span></div>
+                <div class="bar" style="height:47%;"><span class="val">47%</span></div>
+                <div class="bar" style="height:64%;"><span class="val">64%</span></div>
+                <div class="bar" style="height:60%;"><span class="val">60%</span></div>
+                <div class="bar" style="height:72%;"><span class="val">72%</span></div>
+                <div class="bar" style="height:68%;"><span class="val">68%</span></div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="section" id="contact">
+            <h2>Contact Our Support</h2>
+            <p class="sub">Send us your questions or request a custom setup call.</p>
+            <div class="contact-layout">
+                <form class="contact-form" id="contactForm">
+                    <label for="cname">Name</label>
+                    <input type="text" id="cname" placeholder="Your name" required />
+                    <label for="cemail">Email</label>
+                    <input type="email" id="cemail" placeholder="you@example.com" required />
+                    <label for="cmsg">Message</label>
+                    <textarea id="cmsg" rows="4" placeholder="How can we help?" required></textarea>
+                    <button type="submit" class="btn-primary" style="width:100%;padding:14px;">Send Message</button>
+                    <p class="form-message" id="contactMsg" style="margin-top:10px;"></p>
+                </form>
+                <div class="contact-info">
+                    <div>
+                        <h3>📧 Email</h3>
+                        <p>support@tradexrobots.com</p>
+                    </div>
+                    <div>
+                        <h3>💬 Telegram</h3>
+                        <p>@tradexrobots</p>
+                    </div>
+                    <div>
+                        <h3>⏱️ Response Time</h3>
+                        <p>Within 12 hours, usually sooner.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTER MODAL -->
+        <div class="modal-overlay register-modal" id="registerModal">
+            <div class="modal-box">
+                <button class="close-modal" onclick="closeRegisterModal()">✕</button>
+                <h2 style="text-align:center;">Create Account</h2>
+                <p style="text-align:center;color:#9ca3af;margin-bottom:20px;">Join TradeX and start automated trading.</p>
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" placeholder="John Doe" required />
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="you@example.com" required />
+                    <label for="regPass">Password</label>
+                    <input type="password" id="regPass" placeholder="Min 6 characters" required minlength="6" />
+                    <button type="submit" class="btn-primary" style="width:100%;padding:14px;margin-top:8px;">Sign Up</button>
+                    <p style="text-align:center;color:#6b7280;font-size:13px;margin-top:12px;">
+                        Already have an account? <a href="login.html" style="color:#fbbf24;">Log in</a>
+                    </p>
+                </form>
+                <p id="registerMsg" style="text-align:center;margin-top:10px;font-weight:500;"></p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="social-links">
+                <a href="https://facebook.com/tradexrobots" target="_blank" aria-label="Facebook" title="Facebook">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                </a>
+                <a href="https://twitter.com/tradexrobots" target="_blank" aria-label="Twitter / X" title="Twitter / X">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <a href="https://instagram.com/tradexrobots" target="_blank" aria-label="Instagram" title="Instagram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                </a>
+                <a href="https://youtube.com/@tradexrobots" target="_blank" aria-label="YouTube" title="YouTube">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                <a href="https://linkedin.com/company/tradexrobots" target="_blank" aria-label="LinkedIn" title="LinkedIn">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+                <a href="https://t.me/tradexrobots" target="_blank" aria-label="Telegram" title="Telegram">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                </a>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <span style="color:#374151;">•</span>
+                <a href="#">Refund Policy</a>
+                <span style="color:#374151;">•</span>
+                <a href="#">Terms of Service</a>
+                <span style="color:#374151;">•</span>
+                <a href="#">Support</a>
+            </div>
+            <p style="margin-bottom:6px;">© 2026 TradeX Robots. Not affiliated with MetaQuotes.</p>
+            <p style="font-size:12px;color:#4b5563;">* Past performance does not guarantee future results.</p>
+        </footer>
+
+    </div>
+
+    <script src="db.js"></script>
+    <script>
+        // ============================================================
+        //  GLOBALS
+        // ============================================================
+        let currentUser = null;
+        let selectedProductId = null;
+
+        // ============================================================
+        //  DATA (fallback if DB not available)
+        // ============================================================
+        const DEFAULT_PRODUCTS = [
+            { id: 1, name: 'ForexGOLD EA', price: 299, type: 'standard', features: ['XAUUSD & EURUSD', '2-year backtest', '68% win-rate', 'Auto stop-loss', 'Lifetime updates'], desc: 'Our flagship EA optimized for gold and major forex pairs. Proven performance with low drawdown.' },
+            { id: 2, name: 'ForexGOLD Pro', price: 499, type: 'pro', features: ['All standard features', 'Full basket trading', 'Multiple timeframes', 'Advanced risk controls', 'Priority support', 'Custom settings'], desc: 'The pro version gives you full control with multi-currency support and advanced risk management.' }
+        ];
+
+        const DEFAULT_REVIEWS = [
+            { id: 1, name: 'Sarah M.', date: 'Dec 2025', rating: 5, text: 'This EA has been a game changer for my trading. Consistent profits with very low drawdown. Highly recommend!' },
+            { id: 2, name: 'Alex K.', date: 'Nov 2025', rating: 5, text: 'I\'ve tried many robots but this one actually delivers. Support is also very responsive.' },
+            { id: 3, name: 'James W.', date: 'Oct 2025', rating: 4, text: 'Solid performance. The backtest matches live results closely. Great value for money.' },
+            { id: 4, name: 'Elena R.', date: 'Sep 2025', rating: 5, text: 'Set it and forget it. I\'ve been running it for 3 months and I\'m up 22%.' }
+        ];
+
+        const DEFAULT_FAQ = [
+            { q: 'What is TradeX?', a: 'TradeX is a fully automated trading robot (Expert Advisor) for MetaTrader 5 (MT5) that trades Forex and Gold using a proven algorithm with a 68% win-rate.' },
+            { q: 'Do I need trading experience?', a: 'Not at all! The EA is designed to be plug-and-play. Simply install it on MT5, attach to a chart, and let it trade. We also provide setup guides.' },
+            { q: 'What brokers are supported?', a: 'Any MT5 broker that supports XAUUSD and EURUSD with low spreads. We recommend brokers with ECN/STP accounts for best results.' },
+            { q: 'Is there a money-back guarantee?', a: 'Yes! We offer a 30-day money-back guarantee. If you\'re not satisfied, we\'ll refund your purchase in full.' },
+            { q: 'How often is the EA updated?', a: 'We release updates regularly based on market conditions and user feedback. All updates are free for lifetime license holders.' },
+            { q: 'Can I use it on multiple accounts?', a: 'One license is valid for one MT5 account. For multiple accounts, please contact us for a multi-license discount.' }
+        ];
+
+        const DEFAULT_BLOG = [
+            { id: 1, title: '5 Tips for Optimizing Your EA Settings', excerpt: 'Learn how to fine-tune your Expert Advisor for maximum performance in different market conditions.', tag: 'Optimization', date: 'Jan 15, 2026', icon: '📈' },
+            { id: 2, title: 'Why XAUUSD is the Perfect Pair for Algorithmic Trading', excerpt: 'Gold\'s unique price action makes it an ideal candidate for automated strategies. Here\'s why.', tag: 'Education', date: 'Jan 8, 2026', icon: '🥇' },
+            { id: 3, title: 'Risk Management 101: Protecting Your Capital', excerpt: 'Essential risk management techniques every trader should know before running any automated system.', tag: 'Risk', date: 'Dec 28, 2025', icon: '🛡️' }
+        ];
+
+        // ============================================================
+        //  HELPERS
+        // ============================================================
+        function toast(msg, type = 'info') {
+            const old = document.querySelector('.toast');
+            if (old) old.remove();
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            el.innerHTML = `<span class="toast-icon">${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        function getCurrentUser() {
+            if (typeof DB !== 'undefined' && DB.getSession) {
+                const sess = DB.getSession();
+                if (sess) {
+                    const users = DB.getUsers();
+                    return users.find(u => u.id === sess.userId) || null;
+                }
+            }
+            return null;
+        }
+
+        function isAdmin() {
+            const u = getCurrentUser();
+            return u && u.role === 'admin';
+        }
+
+        function uid() {
+            return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        }
+
+        function getProducts() {
+            if (typeof DB !== 'undefined' && DB.getProducts) {
+                return DB.getProducts();
+            }
+            return DEFAULT_PRODUCTS;
+        }
+
+        function getReviews() {
+            if (typeof DB !== 'undefined' && DB.getReviews) {
+                return DB.getReviews();
+            }
+            return DEFAULT_REVIEWS;
+        }
+
+        function getFaq() {
+            if (typeof DB !== 'undefined' && DB.getFaq) {
+                return DB.getFaq();
+            }
+            return DEFAULT_FAQ;
+        }
+
+        function getBlog() {
+            if (typeof DB !== 'undefined' && DB.getBlog) {
+                return DB.getBlog();
+            }
+            return DEFAULT_BLOG;
+        }
+
+        // ============================================================
+        //  RENDER NAV
+        // ============================================================
+        function renderNav() {
+            const nav = document.getElementById('mainNav');
+            currentUser = getCurrentUser();
+            if (currentUser) {
+                const roleLabel = currentUser.role === 'admin' ? 'Admin' : 'User';
+                nav.innerHTML = `
+                            <a href="#home">Home</a>
+                            <a href="#features">Features</a>
+                            <a href="#howitworks">How It Works</a>
+                            <a href="#pricing">Bots</a>
+                            <a href="#reviews">Reviews</a>
+                            <a href="#faq">FAQ</a>
+                            <a href="#blog">Learn</a>
+                            <a href="#contact">Contact</a>
+                            <a href="${currentUser.role === 'admin' ? 'admin-dashboard.html' : 'user-dashboard.html'}">Dashboard</a>
+                            ${currentUser.role === 'admin' ? '<a href="admin-dashboard.html" style="color:#fbbf24;">⚙️ Admin</a>' : ''}
+                            <div class="user-badge">
+                                <div class="avatar">${currentUser.name.charAt(0).toUpperCase()}</div>
+                                <span class="uname">${currentUser.name}</span>
+                                <span class="role-tag ${currentUser.role === 'admin' ? 'admin' : ''}">${roleLabel}</span>
+                                <a href="login.html?logout=true" style="color:#f87171;font-size:13px;font-weight:500;">Logout</a>
+                            </div>
+                        `;
+            } else {
+                nav.innerHTML = `
+                            <a href="#home">Home</a>
+                            <a href="#features">Features</a>
+                            <a href="#howitworks">How It Works</a>
+                            <a href="#pricing">Bots</a>
+                            <a href="#reviews">Reviews</a>
+                            <a href="#faq">FAQ</a>
+                            <a href="#blog">Learn</a>
+                            <a href="#contact">Contact</a>
+                            <a href="login.html" class="btn-outline" style="padding:6px 20px;border-radius:30px;border:1px solid #fbbf24;color:#fbbf24;">Login</a>
+                            <a href="#" class="btn-primary small" style="padding:6px 20px;border-radius:30px;font-size:14px;" onclick="openRegisterModal(event)">Sign Up</a>
+                        `;
+            }
+        }
+
+        // ============================================================
+        //  RENDER PRICING PRODUCTS
+        // ============================================================
+        function renderPricingProducts() {
+            const container = document.getElementById('pricingProducts');
+            if (!container) return;
+            const products = getProducts();
+            container.innerHTML = products.map(p => `
+                        <div class="pricing-card ${p.type === 'pro' ? 'popular' : ''}" onclick="openProductModal(${p.id})">
+                            <h3>${p.name}</h3>
+                            <div class="price">$${p.price} <small>one-time</small></div>
+                            <ul>
+                                ${p.features.map(f => `<li>${f}</li>`).join('')}
+                            </ul>
+                            <button class="btn-primary" onclick="event.stopPropagation(); purchaseProduct(${p.id})">Buy Now</button>
+                        </div>
+                    `).join('');
+        }
+
+        // ============================================================
+        //  PRODUCT MODAL
+        // ============================================================
+        function openProductModal(productId) {
+            const products = getProducts();
+            const p = products.find(pr => pr.id === productId);
+            if (!p) return;
+            selectedProductId = p.id;
+            document.getElementById('modalTitle').textContent = p.name;
+            document.getElementById('modalPrice').textContent = `$${p.price} one-time`;
+            document.getElementById('modalDesc').textContent = p.desc || 'Premium Expert Advisor for MT5.';
+            const featuresList = document.getElementById('modalFeatures');
+            featuresList.innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('productModal').classList.add('open');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.remove('open');
+            selectedProductId = null;
+        }
+
+        function purchaseModalProduct() {
+            if (selectedProductId) {
+                purchaseProduct(selectedProductId);
+                closeProductModal();
+            }
+        }
+
+        // Close modal on overlay click
+        document.getElementById('productModal').addEventListener('click', function(e) {
+            if (e.target === this) closeProductModal();
+        });
+
+        // ============================================================
+        //  PURCHASE FUNCTION
+        // ============================================================
+        function purchaseProduct(productId) {
+            const user = getCurrentUser();
+            if (!user) {
+                toast('Please login first.', 'info');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const products = getProducts();
+            const product = products.find(p => p.id === productId);
+            if (!product) {
+                toast('Product not found.', 'error');
+                return;
+            }
+
+            if (typeof DB !== 'undefined' && DB.getOrders) {
+                const orders = DB.getOrders();
+                const existing = orders.find(o => o.userId === user.id && o.productId === productId && o.status === 'completed');
+                if (existing) {
+                    toast('You already own this product!', 'error');
+                    return;
+                }
+            }
+
+            if (!confirm(`Purchase "${product.name}" for $${product.price}?`)) return;
+
+            if (typeof DB !== 'undefined' && DB.setOrders && DB.getOrders) {
+                const orders = DB.getOrders();
+                const order = {
+                    id: uid(),
+                    userId: user.id,
+                    productId: product.id,
+                    date: new Date().toISOString(),
+                    status: 'completed',
+                    amount: product.price
+                };
+                orders.push(order);
+                DB.setOrders(orders);
+                toast(`🎉 You now own "${product.name}"!`, 'success');
+            } else {
+                toast(`✅ "${product.name}" purchased successfully! (Demo)`, 'success');
+            }
+
+            renderPricingProducts();
+            renderNav();
+        }
+
+        // ============================================================
+        //  RENDER REVIEWS
+        // ============================================================
+        function renderReviews() {
+            const container = document.getElementById('reviewsContainer');
+            if (!container) return;
+            const reviews = getReviews();
+            const starStr = (n) => '★'.repeat(n) + '☆'.repeat(5 - n);
+            container.innerHTML = reviews.map(r => `
+                        <div class="review-card">
+                            <div class="stars">${starStr(r.rating)}</div>
+                            <p class="rtext">"${r.text}"</p>
+                            <div class="rauthor">
+                                <div class="ravatar">${r.name.charAt(0)}</div>
+                                <div>
+                                    <div class="rname">${r.name}</div>
+                                    <div class="rdate">${r.date}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+        }
+
+        // ============================================================
+        //  RENDER FAQ
+        // ============================================================
+        function renderFaq() {
+            const container = document.getElementById('faqContainer');
+            if (!container) return;
+            const faqs = getFaq();
+            container.innerHTML = faqs.map((item, index) => `
+                        <div class="faq-item" onclick="toggleFaq(this)">
+                            <div class="faq-q">
+                                <span>${item.q}</span>
+                                <span class="faq-icon">▼</span>
+                            </div>
+                            <div class="faq-a">${item.a}</div>
+                        </div>
+                    `).join('');
+        }
+
+        function toggleFaq(el) {
+            el.classList.toggle('active');
+        }
+
+        // ============================================================
+        //  RENDER BLOG
+        // ============================================================
+        function renderBlog() {
+            const container = document.getElementById('blogContainer');
+            if (!container) return;
+            const blogs = getBlog();
+            container.innerHTML = blogs.map(b => `
+                        <div class="blog-card">
+                            <div class="bimg">${b.icon || '📚'}</div>
+                            <div class="bcontent">
+                                <span class="btag">${b.tag || 'Article'}</span>
+                                <h3>${b.title}</h3>
+                                <p>${b.excerpt}</p>
+                                <span class="bdate">${b.date}</span>
+                            </div>
+                        </div>
+                    `).join('');
+        }
+
+        // ============================================================
+        //  REGISTER MODAL
+        // ============================================================
+        function openRegisterModal(e) {
+            if (e) e.preventDefault();
+            document.getElementById('registerModal').classList.add('open');
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('registerModal').classList.remove('open');
+            document.getElementById('registerMsg').textContent = '';
+        }
+
+        document.getElementById('registerModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRegisterModal();
+        });
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPass').value.trim();
+            const msg = document.getElementById('registerMsg');
+
+            if (!name || !email || password.length < 6) {
+                msg.textContent = 'Please fill all fields. Password must be at least 6 characters.';
+                msg.style.color = '#f87171';
+                return;
+            }
+
+            if (typeof DB !== 'undefined' && DB.getUsers && DB.setUsers) {
+                const users = DB.getUsers();
+                if (users.find(u => u.email === email)) {
+                    msg.textContent = 'Email already registered. Please login.';
+                    msg.style.color = '#f87171';
+                    return;
+                }
+                const newUser = {
+                    id: uid(),
+                    name: name,
+                    email: email,
+                    password: password,
+                    role: 'user',
+                    created: new Date().toISOString()
+                };
+                users.push(newUser);
+                DB.setUsers(users);
+                msg.textContent = '✅ Account created! Redirecting to login...';
+                msg.style.color = '#34d399';
+                toast('Account created! Please login.', 'success');
+                setTimeout(() => {
+                    closeRegisterModal();
+                    window.location.href = 'login.html';
+                }, 1200);
+            } else {
+                // Demo mode
+                msg.textContent = '✅ Account created (demo mode)! Redirecting...';
+                msg.style.color = '#34d399';
+                toast('Account created! (Demo)', 'success');
+                setTimeout(() => {
+                    closeRegisterModal();
+                    window.location.href = 'login.html';
+                }, 1000);
+            }
+        }
+
+        // ============================================================
+        //  CONTACT FORM
+        // ============================================================
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('cname').value.trim();
+            const email = document.getElementById('cemail').value.trim();
+            const msg = document.getElementById('cmsg').value.trim();
+            const el = document.getElementById('contactMsg');
+            if (!name || !email || !msg) {
+                el.textContent = 'Please fill in all fields.';
+                el.style.color = '#f87171';
+                return;
+            }
+            if (typeof DB !== 'undefined' && DB.addMessage) {
+                const users = DB.getUsers ? DB.getUsers() : [];
+                const user = users.find(u => u.email === email);
+                const convId = user ? user.id : email;
+                DB.addMessage(convId, 'user', msg);
+            }
+            el.textContent = '✅ Message sent! We\'ll get back to you shortly.';
+            el.style.color = '#34d399';
+            this.reset();
+            toast('Message sent!', 'success');
+        });
+
+        // ============================================================
+        //  SMOOTH SCROLL FOR NAV LINKS
+        // ============================================================
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a[href^="#"]');
+            if (link) {
+                const targetId = link.getAttribute('href');
+                if (targetId === '#') return;
+                const target = document.querySelector(targetId);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        });
+
+        // ============================================================
+        //  INIT
+        // ============================================================
+        function init() {
+            renderNav();
+            renderPricingProducts();
+            renderReviews();
+            renderFaq();
+            renderBlog();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
