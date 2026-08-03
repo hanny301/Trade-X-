@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RhinoFX – MT5 Indicators</title>
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0b0e14;
+            color: #e8edf5;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #0b0e14;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 8px 30px rgba(251, 191, 36, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px rgba(251, 191, 36, 0.4);
+        }
+        .btn-primary.small {
+            padding: 10px 24px;
+            font-size: 14px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .btn-outline:hover {
+            border-color: #fbbf24;
+            color: #fbbf24;
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(31, 41, 55, 0.6);
+            flex-wrap: wrap;
+            gap: 12px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(11, 14, 20, 0.85);
+            backdrop-filter: blur(4px);
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo span {
+            color: #6b7280;
+            font-weight: 400;
+            background: none;
+            -webkit-text-fill-color: #6b7280;
+        }
+        .logo-icon {
+            font-size: 28px;
+            -webkit-text-fill-color: initial;
+            color: #fbbf24;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #9ca3af;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-links a:hover {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+        .nav-links a.active {
+            color: #fbbf24;
+            border-bottom-color: #fbbf24;
+        }
+
+        /* ---------- PAGE HERO ---------- */
+        .page-hero {
+            padding: 40px 0 30px;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .page-hero p {
+            color: #9ca3af;
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ---------- PRODUCT GRID ---------- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 20px 0 60px;
+        }
+        .product-card {
+            background: #141a24;
+            border-radius: 20px;
+            border: 1px solid #1f2937;
+            padding: 24px 20px 20px;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: #fbbf24;
+            box-shadow: 0 16px 48px rgba(251, 191, 36, 0.08);
+        }
+        .product-card:hover .card-glow {
+            animation: blinkPulse 0.8s ease-in-out infinite alternate;
+        }
+        @keyframes blinkPulse {
+            0% { opacity: 0.3; transform: scale(0.92); }
+            100% { opacity: 1; transform: scale(1.08); }
+        }
+        .card-glow {
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.04), transparent 70%);
+            pointer-events: none;
+            transition: all 0.6s ease;
+        }
+        .product-card:hover .card-glow {
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.08), transparent 70%);
+            top: -120px;
+            right: -120px;
+        }
+
+        .product-card .card-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.05);
+            padding: 14px;
+            border-radius: 16px;
+            line-height: 1;
+            width: 72px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover .card-icon {
+            transform: scale(1.05) rotate(-2deg);
+            background: rgba(251, 191, 36, 0.1);
+        }
+
+        .product-card .card-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: #e8edf5;
+        }
+        .product-card .card-desc {
+            color: #9ca3af;
+            font-size: 14px;
+            margin-bottom: 12px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        .product-card .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 12px;
+            border-top: 1px solid #1f2937;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .product-card .card-price {
+            font-weight: 700;
+            font-size: 18px;
+            color: #fbbf24;
+        }
+        .product-card .card-price.free {
+            color: #34d399;
+        }
+        .product-card .card-badge {
+            background: rgba(251, 191, 36, 0.1);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.15);
+            font-weight: 600;
+        }
+        .product-card .card-badge.free-badge {
+            background: rgba(52, 211, 153, 0.1);
+            color: #34d399;
+            border-color: rgba(52, 211, 153, 0.15);
+        }
+        .product-card .card-arrow {
+            color: #374151;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+        .product-card:hover .card-arrow {
+            color: #fbbf24;
+            transform: translateX(4px);
+        }
+
+        /* ---------- DETAIL MODAL ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            overflow-y: auto;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-box {
+            background: #141a24;
+            border: 1px solid #2d3748;
+            border-radius: 28px;
+            max-width: 780px;
+            width: 100%;
+            padding: 44px 40px 36px;
+            position: relative;
+            animation: modalIn 0.35s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-box::-webkit-scrollbar { width: 6px; }
+        .modal-box::-webkit-scrollbar-track { background: #0b0e14; border-radius: 10px; }
+        .modal-box::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
+
+        @keyframes modalIn {
+            from { transform: scale(0.94) translateY(24px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .modal-box .close-modal {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 30px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: color 0.2s ease;
+            background: none;
+            border: none;
+            padding: 0 4px;
+            line-height: 1;
+            z-index: 10;
+        }
+        .modal-box .close-modal:hover {
+            color: #f87171;
+        }
+
+        .modal-box .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .modal-box .modal-header .m-icon {
+            font-size: 52px;
+            background: rgba(251, 191, 36, 0.06);
+            padding: 16px;
+            border-radius: 18px;
+            line-height: 1;
+        }
+        .modal-box .modal-header .m-title-group h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e8edf5;
+        }
+        .modal-box .modal-header .m-title-group .m-sub {
+            color: #9ca3af;
+            font-size: 15px;
+        }
+
+        .modal-box .modal-price-tag {
+            display: inline-block;
+            font-size: 28px;
+            font-weight: 800;
+            color: #fbbf24;
+            margin: 4px 0 16px;
+        }
+        .modal-box .modal-price-tag.free {
+            color: #34d399;
+        }
+
+        .modal-box .modal-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+            margin: 16px 0 20px;
+            background: #0b0e14;
+            padding: 18px 20px;
+            border-radius: 16px;
+            border: 1px solid #1f2937;
+        }
+        .modal-box .modal-detail-grid .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-box .modal-detail-grid .detail-item .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #6b7280;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        .modal-box .modal-detail-grid .detail-item .value {
+            color: #e5e7eb;
+            font-size: 15px;
+            font-weight: 500;
+            word-break: break-word;
+        }
+        .modal-box .modal-detail-grid .detail-item .value .tag {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.08);
+            padding: 0 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #fbbf24;
+            margin-right: 4px;
+        }
+
+        .modal-box .modal-section {
+            margin-top: 16px;
+        }
+        .modal-box .modal-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-box .modal-section p,
+        .modal-box .modal-section li {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .modal-box .modal-section ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+        }
+        .modal-box .modal-section ul li {
+            background: #0b0e14;
+            padding: 2px 14px;
+            border-radius: 16px;
+            border: 1px solid #1f2937;
+            font-size: 13px;
+            color: #d1d5db;
+        }
+        .modal-box .modal-section ul li::before {
+            content: "•";
+            color: #fbbf24;
+            margin-right: 4px;
+        }
+
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .modal-box .modal-actions .btn-primary {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            border-top: 1px solid #1f2937;
+            padding: 40px 0 30px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        footer a {
+            color: #9ca3af;
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.2s ease;
+        }
+        footer a:hover {
+            color: #fbbf24;
+        }
+        .footer-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fbbf24, transparent);
+            margin: 0 auto 20px;
+            border-radius: 4px;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px 4px;
+            margin-bottom: 16px;
+        }
+
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            padding: 16px 24px;
+            border-radius: 16px;
+            color: #e5e7eb;
+            font-size: 14px;
+            max-width: 380px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            animation: slideUp 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .toast .toast-icon { font-size: 24px; }
+        .toast.success .toast-icon { color: #34d399; }
+        .toast.error .toast-icon { color: #f87171; }
+        .toast.info .toast-icon { color: #60a5fa; }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            header { flex-direction: column; align-items: stretch; gap: 12px; }
+            .nav-links { justify-content: center; }
+            .modal-box { padding: 28px 20px 24px; }
+            .modal-box .modal-detail-grid { grid-template-columns: 1fr; gap: 8px; }
+            .modal-box .modal-header .m-icon { font-size: 38px; padding: 12px; }
+            .modal-box .modal-header .m-title-group h2 { font-size: 22px; }
+            .product-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+            .page-hero h1 { font-size: 30px; }
+        }
+        @media (max-width: 500px) {
+            .product-grid { grid-template-columns: 1fr; }
+            .modal-box .modal-actions { flex-direction: column; }
+            .modal-box .modal-actions .btn-primary { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">⚡</span> Rhino<span>FX</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#features">Features</a>
+                <a href="index.html#howitworks">How It Works</a>
+                <a href="index.html#products">Products</a>
+                <a href="indicators.html" class="active">📈 Indicators</a>
+                <a href="eas.html">🤖 EAs</a>
+                <a href="index.html#reviews">Reviews</a>
+                <a href="index.html#faq">FAQ</a>
+                <a href="index.html#contact">Contact</a>
+                <a href="login.html" class="btn-outline" style="padding:6px 20px;border-radius:30px;border:1px solid #fbbf24;color:#fbbf24;">Login</a>
+                <a href="#" class="btn-primary small" style="padding:6px 20px;border-radius:30px;font-size:14px;" onclick="openRegisterModal(event)">Sign Up</a>
+            </div>
+        </header>
+
+        <!-- PAGE HERO -->
+        <section class="page-hero">
+            <h1>📈 MT5 Indicators</h1>
+            <p>Smart, non-repainting indicators for precise entries and exits. Choose from our curated collection.</p>
+        </section>
+
+        <!-- PRODUCT GRID -->
+        <div class="product-grid" id="indicatorGrid">
+            <div class="product-card" onclick="window.location.href='product-detail.html?id=${ind.id}&type=indicator'">
+        </div>
+
+        <!-- DETAIL MODAL -->
+        <div class="modal-overlay" id="detailModal">
+            <div class="modal-box">
+                <button class="close-modal" onclick="closeDetailModal()">✕</button>
+                <div id="modalContent">
+                    <!-- Dynamically populated -->
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <footer>
+            <div class="footer-divider"></div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a> <span style="color:#374151;">•</span>
+                <a href="#">Refund Policy</a> <span style="color:#374151;">•</span>
+                <a href="#">Terms of Service</a> <span style="color:#374151;">•</span>
+                <a href="#">Support</a>
+            </div>
+            <p>© 2026 TradeX Robots. Not affiliated with MetaQuotes.</p>
+            <p style="font-size:12px;color:#4b5563;margin-top:4px;">* Past performance does not guarantee future results.</p>
+        </footer>
+    </div>
+
+    <script>
+        // ================================================================
+        //  DB WRAPPER – Same as admin, reads/writes to localStorage
+        // ================================================================
+        const DB = {
+            get(key) {
+                try {
+                    const data = localStorage.getItem('rhinofx_' + key);
+                    return data ? JSON.parse(data) : null;
+                } catch (e) { return null; }
+            },
+            set(key, value) {
+                try {
+                    localStorage.setItem('rhinofx_' + key, JSON.stringify(value));
+                    return true;
+                } catch (e) { return false; }
+            },
+            getIndicators() { return this.get('indicators') || []; },
+            setIndicators(data) { this.set('indicators', data); },
+            getEAs() { return this.get('eas') || []; },
+            setEAs(data) { this.set('eas', data); }
+        };
+
+        // ================================================================
+        //  SEED DATA – Only if localStorage is empty (8 indicators)
+        // ================================================================
+        if (!DB.getIndicators().length) {
+            DB.setIndicators([
+                {
+                    id: 1,
+                    name: 'TrendMaster Pro',
+                    icon: '📊',
+                    shortDesc: 'Advanced trend-following indicator with zero repainting.',
+                    price: 149,
+                    isFree: false,
+                    fileType: '.ex5',
+                    version: 'v3.2.1',
+                    demoVersion: 'Yes – 14-day trial',
+                    fullVersion: 'Lifetime license with updates',
+                    installationGuide: 'Copy .ex5 to MQL5/Indicators folder, restart MT5, drag onto chart.',
+                    userManual: 'Comprehensive 24-page PDF with strategy examples.',
+                    recommendedSettings: 'Timeframe: H1-H4, Sensitivity: 65, Signal: Smooth',
+                    supportedSymbols: ['XAUUSD', 'EURUSD', 'GBPUSD', 'USDJPY', 'AUDUSD'],
+                    supportedBrokers: 'Any MT5 broker with ECN/STP accounts.',
+                    supportedPlatform: 'MT5 (also compatible with MT4 via converter)',
+                    minDeposit: '$100 recommended',
+                    description: 'TrendMaster Pro uses a proprietary algorithm to identify trend direction and strength with high accuracy.'
+                },
+                {
+                    id: 2,
+                    name: 'Scalper Signal X',
+                    icon: '⚡',
+                    shortDesc: 'Ultra-fast scalping signals for M1-M15 timeframes.',
+                    price: 99,
+                    isFree: false,
+                    fileType: '.ex5',
+                    version: 'v2.0.4',
+                    demoVersion: 'Yes – 7-day trial',
+                    fullVersion: 'Lifetime license + 1 year updates',
+                    installationGuide: 'Place .ex5 in Indicators folder, compile, attach to M1 chart.',
+                    userManual: 'Quick-start guide and video tutorial included.',
+                    recommendedSettings: 'Timeframe: M1-M15, Aggressiveness: Medium, Volume filter: ON',
+                    supportedSymbols: ['EURUSD', 'GBPUSD', 'USDJPY', 'XAUUSD'],
+                    supportedBrokers: 'Low-spread ECN brokers recommended (IC Markets, Pepperstone).',
+                    supportedPlatform: 'MT5 only',
+                    minDeposit: '$200 recommended',
+                    description: 'Designed for high-frequency scalpers, this indicator delivers real-time entry signals with minimal lag.'
+                },
+                {
+                    id: 3,
+                    name: 'Volume Pulsar',
+                    icon: '📊',
+                    shortDesc: 'Volume-weighted momentum indicator for breakout detection.',
+                    price: 79,
+                    isFree: false,
+                    fileType: '.ex4',
+                    version: 'v1.8.0',
+                    demoVersion: 'Yes – 10-day trial',
+                    fullVersion: 'Lifetime license',
+                    installationGuide: 'Drag .ex4 into MQL4/Indicators, restart terminal, apply to chart.',
+                    userManual: 'Detailed PDF with setup and interpretation guide.',
+                    recommendedSettings: 'Timeframe: H1-D1, Volume threshold: 1.5x, MA period: 20',
+                    supportedSymbols: ['All major forex pairs', 'XAUUSD', 'BTCUSD'],
+                    supportedBrokers: 'Any MT4/MT5 broker with volume data.',
+                    supportedPlatform: 'MT4 / MT5 (separate files)',
+                    minDeposit: '$50 recommended',
+                    description: 'Volume Pulsar combines volume analysis with price momentum to spot potential breakouts before they happen.'
+                },
+                {
+                    id: 4,
+                    name: 'Support & Resistance X',
+                    icon: '📐',
+                    shortDesc: 'AI-powered S/R zones with automatic update on each bar.',
+                    price: 0,
+                    isFree: true,
+                    fileType: '.ex5',
+                    version: 'v1.2.0',
+                    demoVersion: 'Full free version',
+                    fullVersion: 'Free – no upgrade needed',
+                    installationGuide: 'Install .ex5 to Indicators folder, attach to any chart.',
+                    userManual: 'Built-in tooltips and quick guide PDF.',
+                    recommendedSettings: 'Timeframe: All, Zone strength: 3, Auto-update: ON',
+                    supportedSymbols: ['All forex, indices, commodities'],
+                    supportedBrokers: 'All MT5 brokers.',
+                    supportedPlatform: 'MT5',
+                    minDeposit: 'No minimum – free tool',
+                    description: 'A completely free indicator that automatically plots key support and resistance levels based on price action and volume clustering.'
+                },
+                {
+                    id: 5,
+                    name: 'Fibonacci Retracement Pro',
+                    icon: '🌀',
+                    shortDesc: 'Dynamic Fibonacci levels with auto-extension and alerts.',
+                    price: 59,
+                    isFree: false,
+                    fileType: '.ex5',
+                    version: 'v2.1.0',
+                    demoVersion: 'Yes – 14-day trial',
+                    fullVersion: 'Lifetime license + updates',
+                    installationGuide: 'Copy .ex5 to MQL5/Indicators, compile, drag onto chart.',
+                    userManual: 'PDF with advanced Fibonacci strategies.',
+                    recommendedSettings: 'Timeframe: All, Retracement levels: 0.236-0.786, Extensions: ON',
+                    supportedSymbols: ['All major pairs', 'XAUUSD', 'US30', 'BTCUSD'],
+                    supportedBrokers: 'All MT5 brokers.',
+                    supportedPlatform: 'MT5',
+                    minDeposit: '$100 recommended',
+                    description: 'Automates Fibonacci retracement and extension levels with smart detection of swing highs/lows.'
+                },
+                {
+                    id: 6,
+                    name: 'Market Sentiment Gauge',
+                    icon: '📈',
+                    shortDesc: 'Real-time bullish/bearish sentiment based on order flow.',
+                    price: 129,
+                    isFree: false,
+                    fileType: '.ex5',
+                    version: 'v3.0.2',
+                    demoVersion: 'Yes – 7-day trial',
+                    fullVersion: 'Lifetime + priority support',
+                    installationGuide: 'Install .ex5, drag onto chart, configure data feed.',
+                    userManual: 'Comprehensive 30-page manual with trading strategies.',
+                    recommendedSettings: 'Timeframe: H1, Sentiment window: 50, Threshold: 70/30',
+                    supportedSymbols: ['EURUSD', 'GBPUSD', 'XAUUSD', 'USDJPY'],
+                    supportedBrokers: 'MT5 brokers with depth of market (DOM) data.',
+                    supportedPlatform: 'MT5',
+                    minDeposit: '$250 recommended',
+                    description: 'Analyzes order flow and tick data to gauge real-time market sentiment.'
+                },
+                {
+                    id: 7,
+                    name: 'ATR Dynamic Stop',
+                    icon: '🎯',
+                    shortDesc: 'Volatility-based stop-loss and take-profit calculator.',
+                    price: 39,
+                    isFree: false,
+                    fileType: '.ex4',
+                    version: 'v1.5.0',
+                    demoVersion: 'Yes – 10-day trial',
+                    fullVersion: 'Lifetime license',
+                    installationGuide: 'Place .ex4 in MQL4/Indicators, compile, apply to chart.',
+                    userManual: 'Quick reference card included.',
+                    recommendedSettings: 'Timeframe: H1-D1, ATR period: 14, Multiplier: 1.5x-2x',
+                    supportedSymbols: ['All forex pairs', 'Indices', 'Commodities'],
+                    supportedBrokers: 'All MT4/MT5 brokers.',
+                    supportedPlatform: 'MT4 / MT5',
+                    minDeposit: '$50 recommended',
+                    description: 'Calculates optimal stop-loss and take-profit levels based on current market volatility using Average True Range.'
+                },
+                {
+                    id: 8,
+                    name: 'Divergence Hunter',
+                    icon: '🔍',
+                    shortDesc: 'Spot hidden & regular divergences across RSI, MACD, and more.',
+                    price: 89,
+                    isFree: false,
+                    fileType: '.ex5',
+                    version: 'v2.3.0',
+                    demoVersion: 'Yes – 14-day trial',
+                    fullVersion: 'Lifetime + free upgrades',
+                    installationGuide: 'Copy .ex5 to Indicators, compile, attach to chart with oscillator.',
+                    userManual: 'PDF with divergence trading strategies.',
+                    recommendedSettings: 'Timeframe: H1-H4, Oscillator: RSI(14), Divergence type: Both',
+                    supportedSymbols: ['All forex', 'XAUUSD', 'US30', 'BTCUSD'],
+                    supportedBrokers: 'All MT5 brokers.',
+                    supportedPlatform: 'MT5',
+                    minDeposit: '$100 recommended',
+                    description: 'Detects both regular and hidden divergences across multiple oscillators.'
+                }
+            ]);
+        }
+
+        // ================================================================
+        //  RENDER GRID – Read from DB
+        // ================================================================
+        function renderGrid() {
+            const indicators = DB.getIndicators();
+            const grid = document.getElementById('indicatorGrid');
+            if (!indicators.length) {
+                grid.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px;">No indicators available.</p>';
+                return;
+            }
+            grid.innerHTML = indicators.map(ind => `
+                <div class="product-card" onclick="openDetail(${ind.id})">
+                    <div class="card-glow"></div>
+                    <div class="card-icon">${ind.icon}</div>
+                    <div class="card-name">${ind.name}</div>
+                    <div class="card-desc">${ind.shortDesc}</div>
+                    <div class="card-meta">
+                        <span class="card-price ${ind.isFree ? 'free' : ''}">${ind.isFree ? 'FREE' : '$' + ind.price}</span>
+                        <span class="card-badge ${ind.isFree ? 'free-badge' : ''}">${ind.isFree ? '🎁 Free' : 'Premium'}</span>
+                        <span class="card-arrow">→</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ================================================================
+        //  MODAL – Detail View
+        // ================================================================
+        function openDetail(id) {
+            const indicators = DB.getIndicators();
+            const ind = indicators.find(i => i.id === id);
+            if (!ind) return;
+
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+
+            const priceDisplay = ind.isFree ? 'FREE' : '$' + ind.price;
+            const priceClass = ind.isFree ? 'free' : '';
+            const symbolsHtml = ind.supportedSymbols.map(s => `<li>${s}</li>`).join('');
+
+            content.innerHTML = `
+                <div class="modal-header">
+                    <div class="m-icon">${ind.icon}</div>
+                    <div class="m-title-group">
+                        <h2>${ind.name}</h2>
+                        <div class="m-sub">${ind.shortDesc}</div>
+                    </div>
+                </div>
+                <div class="modal-price-tag ${priceClass}">${priceDisplay}</div>
+                <div style="color:#9ca3af;margin-bottom:12px;font-size:15px;line-height:1.7;">${ind.description}</div>
+                <div class="modal-detail-grid">
+                    <div class="detail-item"><span class="label">File Type</span><span class="value">${ind.fileType}</span></div>
+                    <div class="detail-item"><span class="label">Version</span><span class="value">${ind.version}</span></div>
+                    <div class="detail-item"><span class="label">Demo Version</span><span class="value">${ind.demoVersion}</span></div>
+                    <div class="detail-item"><span class="label">Full Version</span><span class="value">${ind.fullVersion}</span></div>
+                    <div class="detail-item"><span class="label">Supported Platform</span><span class="value">${ind.supportedPlatform}</span></div>
+                    <div class="detail-item"><span class="label">Min. Deposit</span><span class="value">${ind.minDeposit}</span></div>
+                </div>
+                <div class="modal-section"><h4>📦 Installation Guide</h4><p>${ind.installationGuide}</p></div>
+                <div class="modal-section"><h4>📖 User Manual</h4><p>${ind.userManual}</p></div>
+                <div class="modal-section"><h4>⚙️ Recommended Settings</h4><p>${ind.recommendedSettings}</p></div>
+                <div class="modal-section"><h4>📊 Supported Symbols</h4><ul>${symbolsHtml}</ul></div>
+                <div class="modal-section"><h4>🏦 Supported Brokers</h4><p>${ind.supportedBrokers}</p></div>
+                <div class="modal-actions">
+                    <button class="btn-primary" onclick="purchaseIndicator(${ind.id})">
+                        ${ind.isFree ? '⬇️ Download Free' : '🛒 Buy Now – $' + ind.price}
+                    </button>
+                    <button class="btn-outline" onclick="closeDetailModal()">Close</button>
+                </div>
+            `;
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailModal() {
+            document.getElementById('detailModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDetailModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeDetailModal();
+        });
+
+        function purchaseIndicator(id) {
+            const indicators = DB.getIndicators();
+            const ind = indicators.find(i => i.id === id);
+            if (!ind) return;
+            if (ind.isFree) {
+                toast('⬇️ Downloading ' + ind.name + ' (free) ...', 'success');
+                setTimeout(() => {
+                    toast('✅ Download complete! Check your downloads folder.', 'success');
+                }, 1200);
+            } else {
+                toast('🛒 Redirecting to checkout for ' + ind.name + ' ...', 'info');
+                setTimeout(() => {
+                    toast('✅ Purchase successful! You now own ' + ind.name, 'success');
+                }, 1500);
+            }
+        }
+
+        function toast(msg, type = 'info') {
+            const old = document.querySelector('.toast');
+            if (old) old.remove();
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+            el.innerHTML = `<span class="toast-icon">${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        function openRegisterModal(e) {
+            if (e) e.preventDefault();
+            toast('📝 Please visit the home page to sign up.', 'info');
+            setTimeout(() => {
+                window.location.href = 'index.html#registerModal';
+            }, 600);
+        }
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGrid();
+        });
+    </script>
+</body>
+</html>
